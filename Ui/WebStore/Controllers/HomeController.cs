@@ -5,16 +5,25 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Infrastructure;
+using WebStore.Interfaces;
 
 namespace WebStore.Controllers
 {
     public class HomeController : Controller
     {
-        [SimpleActionFilter]
-        public IActionResult Index()
+        private readonly IValueService _valueService;
+
+        public HomeController(IValueService valueService)
         {
-            ViewData["Title"] = "Домашняя страница";
-            return View();
+            _valueService = valueService;
+        }
+        [SimpleActionFilter]
+        public async Task<IActionResult> Index()
+        {
+            var values = await _valueService.GetAsync();
+            return View(values);
+            //ViewData["Title"] = "Домашняя страница";
+            //return View();
         }
 
         public IActionResult ContactUs()

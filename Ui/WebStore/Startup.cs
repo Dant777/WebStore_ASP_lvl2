@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebStore.Clients.Services;
 using WebStore.DAL;
 using WebStore.DomainNew.Entities;
 using WebStore.Infrastructure;
@@ -41,7 +42,7 @@ namespace WebStore
 
             services.AddSingleton<IEmployeesData, InMemoryEmployeeData>();
             //services.AddScoped<IEmployeesData, InMemoryEmployeeData>();
-            //services.AddTransient<IEmployeesData, InMemoryEmployeeData>();
+            services.AddTransient<IValueService, ValuesClient>();
             services.AddScoped<IProductService, SqlProductService>();
             services.AddScoped<IOrdersService, SqlOrdersService>();
 
