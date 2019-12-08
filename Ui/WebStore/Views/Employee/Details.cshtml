@@ -1,0 +1,27 @@
+﻿@model WebStore.DomainNew.ViewModels.EmployeeView
+
+@{
+    ViewData["Title"] = "Детали сотрудника";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>@Model.Id</td>
+            <td>@Model.FirstName</td>
+            <td>@Model.SurName</td>
+            <td>@Model.Patronymic</td>
+            <td>@Model.Age</td>
+        </tr>
+    </table>
+
+    @Html.ActionLink("Назад к списку", "Index")
+
+</body>
+</html>
