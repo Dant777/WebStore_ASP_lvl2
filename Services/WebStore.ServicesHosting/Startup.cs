@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using WebStore.Clients.Services;
 using WebStore.DAL;
 using WebStore.DomainNew.Entities;
 using WebStore.Interfaces;
@@ -37,7 +38,6 @@ namespace WebStore.ServicesHosting
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSingleton<IEmployeesData, InMemoryEmployeeData>();
-            
             services.AddScoped<IProductService, SqlProductService>();
             services.AddScoped<IOrdersService, SqlOrdersService>();
 

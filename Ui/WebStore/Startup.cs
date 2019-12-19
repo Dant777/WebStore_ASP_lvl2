@@ -40,7 +40,7 @@ namespace WebStore
                 options.Filters.Add(new SimpleActionFilter());
             });
 
-            services.AddSingleton<IEmployeesData, InMemoryEmployeeData>();
+            services.AddSingleton<IEmployeesData, EmployeesClient>();
             //services.AddScoped<IEmployeesData, InMemoryEmployeeData>();
             services.AddTransient<IValueService, ValuesClient>();
             services.AddScoped<IProductService, SqlProductService>();

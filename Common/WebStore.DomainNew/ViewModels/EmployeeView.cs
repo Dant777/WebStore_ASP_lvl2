@@ -20,5 +20,7 @@ namespace WebStore.DomainNew.ViewModels
 
         [Display(Name = "Возраст")]
         public int Age { get; set; }
+        [Display(Name = "Должность")]
+        public string Position { get; set; }
     }
 }

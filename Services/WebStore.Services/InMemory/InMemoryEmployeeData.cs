@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using WebStore.DomainNew.ViewModels;
 using WebStore.Interfaces;
@@ -34,6 +35,9 @@ namespace WebStore.Services.InMemory
 
         public void AddNew(EmployeeView model)
         {
+            if (model == null)
+                throw new ArgumentException(nameof(model));
+            
             model.Id = _employees.Max(x=> x.Id) + 1;
             _employees.Add(model);
         }
@@ -49,6 +53,25 @@ namespace WebStore.Services.InMemory
             {
                 _employees.Remove(employee);
             }
+        }
+
+        public EmployeeView UpdateEmployee(int id, EmployeeView entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentException(nameof(entity));
+            }
+
+            var employee = _employees.FirstOrDefault(x => x.Id == entity.Id);
+            if(employee == null)
+                throw new InvalidOperationException("Не найден сотрудник");
+            //Заолнение полей модели
+            employee.Age = entity.Age;
+            employee.FirstName = entity.FirstName;
+            employee.Patronymic = entity.Patronymic;
+            employee.SurName = entity.SurName;
+            employee.Position = entity.Position;
+            return entity;
         }
 
         public IEnumerable<EmployeeView> GetAll()
