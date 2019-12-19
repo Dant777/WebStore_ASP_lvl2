@@ -42,14 +42,27 @@ namespace WebStore
             services.AddTransient<IValueService, ValuesClient>();
             services.AddScoped<IProductService, ProductsClient>();
             services.AddScoped<IOrdersService, OrdersClient>();
+            services.AddTransient<IUsersClient, UsersClient>();
 
-            services.AddDbContext<WebStoreContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("DefaultConnection")));
+
+            
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<WebStoreContext>()
                 .AddDefaultTokenProviders()
                 ;
+
+            services.AddTransient<IUserStore<User>, CustomUserStore>();
+            services.AddTransient<IUserRoleStore<User>, CustomUserStore>();
+            services.AddTransient<IUserClaimStore<User>, CustomUserStore>();
+            services.AddTransient<IUserPasswordStore<User>, CustomUserStore>();
+            services.AddTransient<IUserTwoFactorStore<User>, CustomUserStore>();
+            services.AddTransient<IUserEmailStore<User>, CustomUserStore>();
+            services.AddTransient<IUserPhoneNumberStore<User>, CustomUserStore>();
+            services.AddTransient<IUserLoginStore<User>, CustomUserStore>();
+            services.AddTransient<IUserLockoutStore<User>, CustomUserStore>();
+            services.AddTransient<IRoleStore<IdentityRole>, RolesClient>();
+
 
             //Настрйоки для корзины товаров
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
