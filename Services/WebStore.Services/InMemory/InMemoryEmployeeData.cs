@@ -37,7 +37,7 @@ namespace WebStore.Services.InMemory
         {
             if (model == null)
                 throw new ArgumentException(nameof(model));
-            
+
             model.Id = _employees.Max(x=> x.Id) + 1;
             _employees.Add(model);
         }
@@ -57,21 +57,22 @@ namespace WebStore.Services.InMemory
 
         public EmployeeView UpdateEmployee(int id, EmployeeView entity)
         {
-            if (entity == null)
-            {
+            if(entity == null)
                 throw new ArgumentException(nameof(entity));
-            }
 
             var employee = _employees.FirstOrDefault(x => x.Id == entity.Id);
-            if(employee == null)
+
+            if (employee == null)
                 throw new InvalidOperationException("Не найден сотрудник");
-            //Заолнение полей модели
+
+            // заполним поля модели
             employee.Age = entity.Age;
             employee.FirstName = entity.FirstName;
             employee.Patronymic = entity.Patronymic;
             employee.SurName = entity.SurName;
             employee.Position = entity.Position;
-            return entity;
+
+            return employee;
         }
 
         public IEnumerable<EmployeeView> GetAll()

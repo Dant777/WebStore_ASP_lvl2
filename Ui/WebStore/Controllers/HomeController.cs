@@ -17,13 +17,14 @@ namespace WebStore.Controllers
         {
             _valueService = valueService;
         }
+
         [SimpleActionFilter]
         public async Task<IActionResult> Index()
         {
             var values = await _valueService.GetAsync();
             return View(values);
+
             //ViewData["Title"] = "Домашняя страница";
-            //return View();
         }
 
         public IActionResult ContactUs()

@@ -45,7 +45,6 @@ namespace WebStore.Interfaces
         /// <param name="entity">Сотрудник для обновления</param>
         /// <returns></returns>
         EmployeeView UpdateEmployee(int id, EmployeeView entity);
-
     }
 
 }

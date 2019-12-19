@@ -2,8 +2,10 @@
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using WebStore.DAL;
+using WebStore.DomainNew.Dto;
 using WebStore.DomainNew.Entities;
 using WebStore.DomainNew.Filters;
+using WebStore.DomainNew.Helper;
 using WebStore.Interfaces;
 
 namespace WebStore.Services.Sql
@@ -27,7 +29,7 @@ namespace WebStore.Services.Sql
             return _context.Brands.ToList();
         }
 
-        public IEnumerable<Product> GetProducts(ProductFilter filter)
+        public IEnumerable<ProductDto> GetProducts(ProductFilter filter)
         {
             var products = _context.Products
                 .Include(p => p.Brand)
@@ -39,15 +41,22 @@ namespace WebStore.Services.Sql
             if (filter.BrandId.HasValue)
                 products = products.Where(x => x.BrandId == filter.BrandId.Value);
 
-            return products.ToList();
+            return products
+                .Select(p => p.ToDto())
+                .ToList();
         }
 
-        public Product GetProductById(int id)
+        public ProductDto GetProductById(int id)
         {
-            return _context.Products
+            var product = _context.Products
                 .Include(p => p.Brand)
                 .Include(p => p.Section)
                 .FirstOrDefault(p => p.Id == id);
+
+            if (product == null)
+                return null;
+
+            return product.ToDto();
         }
     }
 }

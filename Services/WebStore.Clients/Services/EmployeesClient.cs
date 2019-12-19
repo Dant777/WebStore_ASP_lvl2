@@ -8,48 +8,48 @@ using WebStore.Interfaces;
 
 namespace WebStore.Clients.Services
 {
-    public class EmployeesClient:BaseClient, IEmployeesData
+    public class EmployeesClient : BaseClient, IEmployeesData
     {
-        protected override string SerciveAddress { get; } = "api/employees";
+        protected override string ServiceAddress { get; } = "api/employees";
+
         public EmployeesClient(IConfiguration configuration) : base(configuration)
         {
         }
 
-        
         public IEnumerable<EmployeeView> GetAll()
         {
-            string url = $"{SerciveAddress}";
+            string url = $"{ServiceAddress}";
             return Get<List<EmployeeView>>(url);
         }
 
         public EmployeeView GetById(int id)
         {
-            string url = $"{SerciveAddress}/{id}";
+            string url = $"{ServiceAddress}/{id}";
             return Get<EmployeeView>(url);
         }
 
         public void Commit()
         {
-            
         }
 
         public void AddNew(EmployeeView model)
         {
-            string url = $"{SerciveAddress}";
+            string url = $"{ServiceAddress}";
             Post(url, model);
         }
 
         public void Delete(int id)
         {
-            string url = $"{SerciveAddress}/{id}";
+            string url = $"{ServiceAddress}/{id}";
             Delete(url);
         }
 
         public EmployeeView UpdateEmployee(int id, EmployeeView entity)
         {
-            string url = $"{SerciveAddress}/{id}";
+            string url = $"{ServiceAddress}/{id}";
             var result = Put(url, entity);
             return result.Content.ReadAsAsync<EmployeeView>().Result;
         }
+
     }
 }

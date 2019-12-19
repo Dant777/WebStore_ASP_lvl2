@@ -30,8 +30,6 @@ namespace WebStore
             Configuration = configuration;
         }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options =>
@@ -41,10 +39,9 @@ namespace WebStore
             });
 
             services.AddSingleton<IEmployeesData, EmployeesClient>();
-            //services.AddScoped<IEmployeesData, InMemoryEmployeeData>();
             services.AddTransient<IValueService, ValuesClient>();
-            services.AddScoped<IProductService, SqlProductService>();
-            services.AddScoped<IOrdersService, SqlOrdersService>();
+            services.AddScoped<IProductService, ProductsClient>();
+            services.AddScoped<IOrdersService, OrdersClient>();
 
             services.AddDbContext<WebStoreContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("DefaultConnection")));
@@ -53,31 +50,6 @@ namespace WebStore
                 .AddEntityFrameworkStores<WebStoreContext>()
                 .AddDefaultTokenProviders()
                 ;
-
-            //services.Configure<IdentityOptions>(options => // необязательно
-            //{
-            //    // Password settings
-            //    options.Password.RequiredLength = 6;
-
-            //    // Lockout settings
-            //    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
-            //    options.Lockout.MaxFailedAccessAttempts = 10;
-            //    options.Lockout.AllowedForNewUsers = true;
-
-            //    // User settings
-            //    options.User.RequireUniqueEmail = true;
-            //});
-
-            //services.ConfigureApplicationCookie(options => // необязательно
-            //{
-            //    // Cookie settings
-            //    options.Cookie.HttpOnly = true;
-            //    options.Cookie.Expiration = TimeSpan.FromDays(150);
-            //    options.LoginPath = "/Account/Login"; // If the LoginPath is not set here, ASP.NET Core will default to /Account/Login
-            //    options.LogoutPath = "/Account/Logout"; // If the LogoutPath is not set here, ASP.NET Core will default to /Account/Logout
-            //    options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
-            //    options.SlidingExpiration = true;
-            //});
 
             //Настрйоки для корзины товаров
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

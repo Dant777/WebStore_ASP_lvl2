@@ -13,21 +13,17 @@ namespace WebStore.Clients
     {
         protected HttpClient Client { get; set; }
 
-        protected abstract string SerciveAddress { get; }
+        protected abstract string ServiceAddress { get; }
 
         protected BaseClient(IConfiguration configuration)
         {
-            //Экземпляр клиента
             Client = new HttpClient()
             {
-                // Базовый адрес, на котором будут хостится сервисы
                 BaseAddress = new Uri(configuration["ClientAddress"])
             };
-            //Очистка хеедра
             Client.DefaultRequestHeaders.Accept.Clear();
-            //Установка хедера который говорит серверу что он отправлял данные в формате json
-            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
+            Client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
         protected T Get<T>(string url) where T : new()
@@ -41,34 +37,35 @@ namespace WebStore.Clients
             var response = await Client.GetAsync(url);
             if (response.IsSuccessStatusCode)
                 list = await response.Content.ReadAsAsync<T>();
+
             return list;
         }
 
-        public HttpResponseMessage Post<T>(string url, T value) where T : new()
+        public HttpResponseMessage Post<T>(string url, T value)
         {
             return PostAsync<T>(url, value).Result;
         }
 
-        public async Task<HttpResponseMessage> PostAsync<T>(string url, T value) where T : new()
+        public async Task<HttpResponseMessage> PostAsync<T>(string url, T value)
         {
-            var response = await Client.PutAsJsonAsync(url, value);
-            response.EnsureSuccessStatusCode();
+            var response = await Client.PostAsJsonAsync(url, value);
+            //response.EnsureSuccessStatusCode();
             return response;
         }
 
-        public HttpResponseMessage Put<T>(string url, T value) where T : new()
+        public HttpResponseMessage Put<T>(string url, T value)
         {
             return PutAsync<T>(url, value).Result;
         }
 
-        public async Task<HttpResponseMessage> PutAsync<T>(string url, T value) where T : new()
+        public async Task<HttpResponseMessage> PutAsync<T>(string url, T value)
         {
-            var response = await Client.PostAsJsonAsync($"{SerciveAddress}/put", value);
-            response.EnsureSuccessStatusCode();
+            var response = await Client.PutAsJsonAsync(url, value);
+            //response.EnsureSuccessStatusCode();
             return response;
         }
 
-        public HttpResponseMessage Delete(string url)
+        public HttpResponseMessage Delete(string url) 
         {
             return DeleteAsync(url).Result;
         }
@@ -76,7 +73,6 @@ namespace WebStore.Clients
         public async Task<HttpResponseMessage> DeleteAsync(string url)
         {
             return await Client.DeleteAsync(url);
-            
         }
     }
 }
