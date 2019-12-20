@@ -80,6 +80,12 @@ namespace WebStore
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
+
+            app.UseStatusCodePagesWithRedirects("~/home/ErrorStatus/{0}");
 
             app.UseWelcomePage("/welcome");
 
@@ -103,7 +109,7 @@ namespace WebStore
             app.UseStaticFiles();
 
             app.UseAuthentication();
-
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>
             {
@@ -117,12 +123,12 @@ namespace WebStore
                 );
             });
 
-            var hello = Configuration["CustomHelloWorld"];
+            //var hello = Configuration["CustomHelloWorld"];
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync(hello);
-            });
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync(hello);
+            //});
         }
 
         private void CustomIndexHandler(IApplicationBuilder obj)

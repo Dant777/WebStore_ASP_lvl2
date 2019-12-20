@@ -17,14 +17,15 @@ namespace WebStore.Controllers
 
         public HomeController(IValueService valueService, ILogger<HomeController> logger)
         {
+            
             _valueService = valueService;
             _logger = logger;
         }
 
-        [SimpleActionFilter]
+        [SimpleActionFilter] 
         public async Task<IActionResult> Index()
         {
-
+            throw new Exception("No pasaran!");
             _logger.LogInformation("Index action requested");
             _logger.LogTrace("Trace! winter is coming");
             _logger.LogInformation("Info! winter is coming");
@@ -58,6 +59,17 @@ namespace WebStore.Controllers
         {
             return View();
         }
+        public IActionResult ErrorStatus(string id)
+        {
+            if (id == "404")
+                return RedirectToAction("NotFound");
+            return Content($"Статуcный код ошибки: {id}");
+        }
+        public IActionResult Error()
+        {
+            return View();
+        }
+
 
         public IActionResult NotFound()
         {

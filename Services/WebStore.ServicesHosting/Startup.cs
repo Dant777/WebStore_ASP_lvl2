@@ -70,6 +70,7 @@ namespace WebStore.ServicesHosting
             }
 
             app.UseHttpsRedirection();
+            app.UseMiddleware(typeof(ErrorHandlingMiddleware));
             app.UseMvc();
         }
     }
