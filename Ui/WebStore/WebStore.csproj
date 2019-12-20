@@ -1065,6 +1065,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\WebStore.DomainNew\WebStore.DomainNew.csproj" />
+    <ProjectReference Include="..\..\Common\WebStore.Loger\WebStore.Loger.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.Clients\WebStore.Clients.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.DAL\WebStore.DAL.csproj" />
     <ProjectReference Include="..\..\Services\WebStore.Services\WebStore.Services.csproj" />

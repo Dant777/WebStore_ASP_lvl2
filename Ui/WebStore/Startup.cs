@@ -10,11 +10,13 @@ using Microsoft.AspNetCore.Routing.Template;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using WebStore.Clients.Services;
 using WebStore.DAL;
 using WebStore.DomainNew.Entities;
 using WebStore.Infrastructure;
 using WebStore.Interfaces;
+using WebStore.Loger;
 using WebStore.Services;
 using WebStore.Services.InMemory;
 using WebStore.Services.Sql;
@@ -70,8 +72,10 @@ namespace WebStore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddLog4Net();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
