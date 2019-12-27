@@ -25,14 +25,14 @@ namespace WebStore.Controllers
         [SimpleActionFilter] 
         public async Task<IActionResult> Index()
         {
-            throw new Exception("No pasaran!");
-            _logger.LogInformation("Index action requested");
-            _logger.LogTrace("Trace! winter is coming");
-            _logger.LogInformation("Info! winter is coming");
-            _logger.LogWarning("Warning! winter is coming");
-            _logger.LogDebug("Debug! winter is coming");
-            _logger.LogError("Error! winter is coming");
-            _logger.LogCritical("Critical! winter is coming");
+            //throw new Exception("No pasaran!");
+            _logger?.LogInformation("Index action requested");
+            _logger?.LogTrace("Trace! winter is coming");
+            _logger?.LogInformation("Info! winter is coming");
+            _logger?.LogWarning("Warning! winter is coming");
+            _logger?.LogDebug("Debug! winter is coming");
+            _logger?.LogError("Error! winter is coming");
+            _logger?.LogCritical("Critical! winter is coming");
 
             var values = await _valueService.GetAsync();
             return View(values);
@@ -42,6 +42,7 @@ namespace WebStore.Controllers
 
         public IActionResult ContactUs()
         {
+            //return null;
             return View();
         }
 
