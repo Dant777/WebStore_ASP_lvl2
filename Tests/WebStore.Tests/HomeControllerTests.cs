@@ -57,7 +57,7 @@ namespace WebStore.Tests
         public void ErrorStatus_404_Redirects_to_NotFound()
         {
             //Act - оброщение
-            var result = _controller.ErrorStatus("403");//Ожидание 404
+            var result = _controller.ErrorStatus("404");//Ожидание 404
 
             //Assert - проверка
             var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
@@ -72,9 +72,41 @@ namespace WebStore.Tests
             //Act - обращение к методу с ошибкой 500
             var result = _controller.ErrorStatus("500");
             var contentResult = Xunit.Assert.IsType<ContentResult>(result);
+            //Проверяем 
             Xunit.Assert.Equal("Статуcный код ошибки: 500",
                 contentResult.Content);
         }
+        [Fact]
+        public void Checkout_Returns_View()
+        {
+            var result = _controller.Checkout();
+            Xunit.Assert.IsType<ViewResult>(result);
+        }
+        [Fact]
+        public void BlogSingle_Returns_View()
+        {
+            var result = _controller.BlogSingle();
+            Xunit.Assert.IsType<ViewResult>(result);
+        }
+
+        public void Blog_Returns_View()
+        {
+            var result = _controller.Blog();
+            Xunit.Assert.IsType<ViewResult>(result);
+        }
+        [Fact]
+        public void Error_Returns_View()
+        {
+            var result = _controller.Error();
+            Xunit.Assert.IsType<ViewResult>(result);
+        }
+        [Fact]
+        public void NotFound_Returns_View()
+        {
+            var result = _controller.NotFound();
+            Xunit.Assert.IsType<ViewResult>(result);
+        }
+
 
     }
 }

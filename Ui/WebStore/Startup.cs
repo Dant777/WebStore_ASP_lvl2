@@ -68,7 +68,8 @@ namespace WebStore
 
             //Настрйоки для корзины товаров
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddScoped<ICartService, CookieCartService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<ICartStore, CookiesCartStore>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
