@@ -2520,4 +2520,8 @@ h2.title {
   color: #FE980F;
 }
 
+.panel-heading h4.active,
+.panel-body ul li.active {
+    text-decoration: underline;
+}
 

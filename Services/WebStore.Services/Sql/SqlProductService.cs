@@ -58,5 +58,15 @@ namespace WebStore.Services.Sql
 
             return product.ToDto();
         }
+
+        public Section GetSectionById(int id)
+        {
+            return _context.Sections.FirstOrDefault(s => s.Id == id);
+        }
+
+        public Brand GetBrandById(int id)
+        {
+            return _context.Brands.FirstOrDefault(s => s.Id == id);
+        }
     }
 }
