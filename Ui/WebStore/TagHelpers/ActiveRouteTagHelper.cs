@@ -8,8 +8,8 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace WebStore.TagHelpers
 {
-    [HtmlTargetElement(Attributes = "is-active-rout")]
-    public class ActiveRouteTagHelper:TagHelper
+    [HtmlTargetElement(Attributes = "is-active-route")]
+    public class ActiveRouteTagHelper : TagHelper
     {
         [HtmlAttributeName("asp-action")]
         public string Action { get; set; }
@@ -24,26 +24,26 @@ namespace WebStore.TagHelpers
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
             base.Process(context, output);
+
             if (ShouldBeActive())
-            {
                 MakeActive(output);
-            }
 
-
-            output.Attributes.RemoveAll("is-active-rout");
+            output.Attributes.RemoveAll("is-active-route");
         }
 
         private void MakeActive(TagHelperOutput output)
         {
-            var classAttribute = output.Attributes.FirstOrDefault(a => a.Name == "class");//поиск атрибута в теге
+            var classAttribute = output.Attributes.FirstOrDefault(a => a.Name == "class");
             if (classAttribute == null)
             {
                 classAttribute = new TagHelperAttribute("class", "active");
                 output.Attributes.Add(classAttribute);
             }
-            else if (classAttribute.Value?.ToString().Contains("active", StringComparison.Ordinal)!= true)
+            else if (classAttribute.Value?.ToString().Contains("active", StringComparison.Ordinal) != true)
             {
-                output.Attributes.SetAttribute("class", classAttribute.Value is null? "active":classAttribute.Value + " active");
+                output.Attributes.SetAttribute("class", classAttribute.Value is null
+                    ? "active"
+                    : classAttribute.Value + " active");
             }
         }
 
@@ -51,13 +51,12 @@ namespace WebStore.TagHelpers
         {
             var currentController = ViewContext.RouteData.Values["Controller"].ToString();
             var currentAction = ViewContext.RouteData.Values["Action"].ToString();
+
             if (!string.IsNullOrWhiteSpace(Controller) && currentController != Controller)
                 return false;
 
             if (!string.IsNullOrWhiteSpace(Action) && Action != currentAction)
-            {
                 return false;
-            }
 
             return true;
         }

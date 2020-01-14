@@ -20,7 +20,6 @@ namespace WebStore.DomainNew.Helper
                     Id = p.SectionId,
                     Name = p.Section.Name
                 }
-                
             };
     }
 }

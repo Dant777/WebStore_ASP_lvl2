@@ -7,9 +7,9 @@ using log4net;
 using log4net.Repository;
 using Microsoft.Extensions.Logging;
 
-namespace WebStore.Loger
+namespace WebStore.Logger
 {
-    public class Log4NetLogger:ILogger
+    public class Log4NetLogger : ILogger
     {
         private readonly ILog _log;
         private ILoggerRepository _loggerRepository;
@@ -20,18 +20,22 @@ namespace WebStore.Loger
                 Assembly.GetEntryAssembly(),
                 typeof(log4net.Repository.Hierarchy.Hierarchy));
             _log = LogManager.GetLogger(_loggerRepository.Name, name);
-            log4net.Config.XmlConfigurator.Configure(_loggerRepository,
+            log4net.Config.XmlConfigurator.Configure(
+                _loggerRepository,
                 xmlElement);
-
         }
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception
+            , Func<TState, Exception, string> formatter)
         {
-            if(IsEnabled(logLevel))
+            if (!IsEnabled(logLevel))
                 return;
-            if(formatter == null)
+
+            if (formatter == null)
                 throw new ArgumentNullException(nameof(formatter));
 
             var message = formatter(state, exception);
+
             if (string.IsNullOrEmpty(message) && exception == null) return;
 
             switch (logLevel)
@@ -60,7 +64,6 @@ namespace WebStore.Loger
                     break;
 
             }
-
         }
 
         public bool IsEnabled(LogLevel logLevel)

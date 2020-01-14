@@ -1,12 +1,12 @@
 ﻿@model IEnumerable<WebStore.DomainNew.ViewModels.ProductViewModel>
+
 @{
     var isBrand = Context.Request.Query.ContainsKey("brandId");
-
-    
+    var brandRoutePath = isBrand ? "asp-route-fromBrand=true" : "";
 }
 <div class="features_items">
     <!--features_items-->
-    <h2 class="title text-center">Features Items</h2>
+    <h2 class="title text-center">Товары</h2>
     @foreach (var item in Model)
     {
         <div class="col-sm-4">
@@ -15,7 +15,7 @@
                     <div class="productinfo text-center">
                         @if (isBrand)
                         {
-                            <a asp-route-ftomBrand="true" asp-action="ProductDetails" asp-route-id="@item.Id">
+                            <a asp-route-fromBrand="true" asp-action="ProductDetails" asp-route-id="@item.Id">
                                 <img src="~/images/home/@item.ImageUrl" alt="" />
                                 <h2>@item.Price.ToString("C")</h2>
                                 <p>@item.Name</p>
@@ -29,13 +29,13 @@
                                 <p>@item.Name</p>
                             </a>
                         }
-
                         <a asp-controller="Cart" asp-action="AddToCart"
                            asp-route-id="@item.Id"
                            asp-route-returnUrl="@Context.Request.Path"
-                           class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                           class="btn btn-default add-to-cart">
+                            <i class="fa fa-shopping-cart"></i>Add to cart
+                        </a>
                     </div>
-                  
                 </div>
                 <div class="choose">
                     <ul class="nav nav-pills nav-justified">

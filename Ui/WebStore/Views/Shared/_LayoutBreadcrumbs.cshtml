@@ -1,19 +1,24 @@
 ﻿@using WebStore.DomainNew.ViewModels
 @{
     Layout = "_Layout";
+
     var type = Context.Request.Query.ContainsKey("sectionId")
-        ? BreadCrumbType.Section : Context.Request.Query.ContainsKey("brandId")
-            ? BreadCrumbType.Brand : BreadCrumbType.None;
+        ? BreadCrumbType.Section
+        : Context.Request.Query.ContainsKey("brandId")
+            ? BreadCrumbType.Brand
+            : BreadCrumbType.None;
 
     var fromType = BreadCrumbType.Section;
 
     // Если это метод деталей товара
     if ((string)ViewContext.RouteData.Values["action"] == "ProductDetails")
     {
-// Устанавливаем тип товар
+        // Устанавливаем тип товара
         type = BreadCrumbType.Item;
     }
+
     var id = 0;
+
     switch (type)
     {
         case BreadCrumbType.None:
@@ -25,7 +30,8 @@
             id = int.Parse(Context.Request.Query["brandId"].ToString());
             break;
         case BreadCrumbType.Item:
-// Если есть ключ того, что пришли с бренда, ставим источник – бренд
+            // Если есть ключ того, что пришли с бренда,
+            // ставим источник – бренд
             if (Context.Request.Query.ContainsKey("fromBrand"))
             {
                 fromType = BreadCrumbType.Brand;
@@ -37,7 +43,6 @@
     }
 
 }
-
 
 @(await @Component.InvokeAsync("BreadCrumbs", new {type, id, fromType}))
 

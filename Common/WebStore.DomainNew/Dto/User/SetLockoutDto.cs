@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace WebStore.DomainNew.Dto.User
 {
@@ -6,5 +8,6 @@ namespace WebStore.DomainNew.Dto.User
     {
         public Entities.User User { get; set; }
         public DateTimeOffset? LockoutEnd { get; set; }
+
     }
 }

@@ -45,16 +45,17 @@ namespace WebStore.Clients.Services
 
         public Section GetSectionById(int id)
         {
-            string url = $"{ServiceAddress}/sections/{id}";
+            var url = $"{ServiceAddress}/sections/{id}";
             var result = Get<Section>(url);
             return result;
         }
 
         public Brand GetBrandById(int id)
         {
-            string url = $"{ServiceAddress}/brands/{id}";
+            var url = $"{ServiceAddress}/brands/{id}";
             var result = Get<Brand>(url);
             return result;
         }
+
     }
 }

@@ -9,6 +9,5 @@ namespace WebStore.DomainNew.Dto.User
         public Entities.User User { get; set; }
         public string Hash { get; set; }
 
-
     }
 }

@@ -68,5 +68,6 @@ namespace WebStore.Services.Sql
         {
             return _context.Brands.FirstOrDefault(s => s.Id == id);
         }
+
     }
 }

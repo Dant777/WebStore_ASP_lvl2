@@ -9,7 +9,7 @@ namespace WebStore.DomainNew.ViewModels
         None = 0,
         Section = 1,
         Brand = 2,
-        Item =3
-
+        Item = 3
     }
+
 }

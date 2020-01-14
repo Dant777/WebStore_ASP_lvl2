@@ -16,7 +16,7 @@ using WebStore.DAL;
 using WebStore.DomainNew.Entities;
 using WebStore.Infrastructure;
 using WebStore.Interfaces;
-using WebStore.Loger;
+using WebStore.Logger;
 using WebStore.Services;
 using WebStore.Services.InMemory;
 using WebStore.Services.Sql;
@@ -47,10 +47,8 @@ namespace WebStore
             services.AddTransient<IUsersClient, UsersClient>();
 
 
-            
-
+            // Настройка Identity
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<WebStoreContext>()
                 .AddDefaultTokenProviders()
                 ;
 
@@ -65,7 +63,6 @@ namespace WebStore
             services.AddTransient<IUserLockoutStore<User>, CustomUserStore>();
             services.AddTransient<IRoleStore<IdentityRole>, RolesClient>();
 
-
             //Настрйоки для корзины товаров
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<ICartService, CartService>();
@@ -73,7 +70,9 @@ namespace WebStore
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app
+            , IHostingEnvironment env
+            , ILoggerFactory loggerFactory)
         {
             loggerFactory.AddLog4Net();
 
@@ -110,7 +109,9 @@ namespace WebStore
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
             app.UseMiddleware(typeof(ErrorHandlingMiddleware));
+
             //app.UseMvcWithDefaultRoute();
             app.UseMvc(routes =>
             {

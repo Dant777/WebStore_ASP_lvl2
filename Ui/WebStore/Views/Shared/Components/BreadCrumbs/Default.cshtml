@@ -1,7 +1,6 @@
 ﻿@using WebStore.DomainNew.ViewModels
 @model IEnumerable<WebStore.DomainNew.ViewModels.BreadCrumbViewModel>
 
-
 <div class="breadcrumbs">
     <ol class="breadcrumb">
         <li><a asp-controller="Home" asp-action="Index">Home</a></li>
@@ -15,14 +14,17 @@
                     break;
                 case BreadCrumbType.Section:
                     <li>
-                        <a asp-controller="Catalog" asp-action="Shop"
-                           asp-route-sectionId="@item.Id">@item.Name</a>
+                        <a asp-controller="Catalog" asp-action="Shop" asp-route-sectionId="@item.Id">
+                            @item.Name
+                        </a>
                     </li>
+
                     break;
                 case BreadCrumbType.Brand:
                     <li>
-                        <a asp-controller="Catalog" asp-action="Shop"
-                           asp-route-brandId="@item.Id">@item.Name</a>
+                        <a asp-controller="Catalog" asp-action="Shop" asp-route-brandId="@item.Id">
+                            @item.Name
+                        </a>
                     </li>
                     break;
                 case BreadCrumbType.Item:

@@ -8,9 +8,7 @@ namespace WebStore.Services
 {
     public class ErrorHandlingMiddleware
     {
-        private static readonly log4net.ILog Log =
-            log4net.LogManager.GetLogger(typeof(ErrorHandlingMiddleware));
-
+        private static log4net.ILog Log = log4net.LogManager.GetLogger(typeof(ErrorHandlingMiddleware));
         private readonly RequestDelegate _next;
 
         public ErrorHandlingMiddleware(RequestDelegate next)
@@ -31,10 +29,10 @@ namespace WebStore.Services
             }
         }
 
-        private static Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            Log.Error(ex.Message, ex);
-            return  Task.CompletedTask;
+            Log.Error(exception.Message, exception);
+            return Task.CompletedTask;
         }
     }
 }

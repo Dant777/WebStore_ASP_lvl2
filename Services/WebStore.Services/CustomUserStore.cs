@@ -10,15 +10,15 @@ using WebStore.Interfaces;
 
 namespace WebStore.Services
 {
-    public class CustomUserStore: IUserRoleStore<User>,
+    public class CustomUserStore : IUserStore<User>,
+        IUserLoginStore<User>,
+        IUserRoleStore<User>,
         IUserClaimStore<User>,
         IUserPasswordStore<User>,
         IUserTwoFactorStore<User>,
         IUserEmailStore<User>,
         IUserPhoneNumberStore<User>,
-        IUserLoginStore<User>,
-        IUserLockoutStore<User>,
-        IUserStore<User>
+        IUserLockoutStore<User>
     {
         private readonly IUsersClient _client;
 
@@ -80,6 +80,26 @@ namespace WebStore.Services
         public Task<User> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
         {
             return _client.FindByNameAsync(normalizedUserName, cancellationToken);
+        }
+
+        public Task AddLoginAsync(User user, UserLoginInfo login, CancellationToken cancellationToken)
+        {
+            return _client.AddLoginAsync(user, login, cancellationToken);
+        }
+
+        public Task RemoveLoginAsync(User user, string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            return _client.RemoveLoginAsync(user, loginProvider, providerKey, cancellationToken);
+        }
+
+        public Task<IList<UserLoginInfo>> GetLoginsAsync(User user, CancellationToken cancellationToken)
+        {
+            return _client.GetLoginsAsync(user, cancellationToken);
+        }
+
+        public Task<User> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
+        {
+            return _client.FindByLoginAsync(loginProvider, providerKey, cancellationToken);
         }
 
         public Task AddToRoleAsync(User user, string roleName, CancellationToken cancellationToken)
@@ -210,26 +230,6 @@ namespace WebStore.Services
         public Task SetPhoneNumberConfirmedAsync(User user, bool confirmed, CancellationToken cancellationToken)
         {
             return _client.SetPhoneNumberConfirmedAsync(user, confirmed, cancellationToken);
-        }
-
-        public Task AddLoginAsync(User user, UserLoginInfo login, CancellationToken cancellationToken)
-        {
-            return _client.AddLoginAsync(user, login, cancellationToken);
-        }
-
-        public Task RemoveLoginAsync(User user, string loginProvider, string providerKey, CancellationToken cancellationToken)
-        {
-            return _client.RemoveLoginAsync(user, loginProvider, providerKey, cancellationToken);
-        }
-
-        public Task<IList<UserLoginInfo>> GetLoginsAsync(User user, CancellationToken cancellationToken)
-        {
-            return _client.GetLoginsAsync(user, cancellationToken);
-        }
-
-        public Task<User> FindByLoginAsync(string loginProvider, string providerKey, CancellationToken cancellationToken)
-        {
-            return _client.FindByLoginAsync(loginProvider, providerKey, cancellationToken);
         }
 
         public Task<DateTimeOffset?> GetLockoutEndDateAsync(User user, CancellationToken cancellationToken)

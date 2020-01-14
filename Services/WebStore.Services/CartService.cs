@@ -12,11 +12,7 @@ namespace WebStore.Services
     public class CartService : ICartService
     {
         private readonly ICartStore _cartStore;
-
         private IProductService _productService { get; }
-        
-
-      
 
         public CartService(IProductService productService, ICartStore cartStore)
         {
@@ -28,7 +24,7 @@ namespace WebStore.Services
         {
             var cart = _cartStore.Cart;
 
-            var item = _cartStore.Cart.Items.FirstOrDefault(x => x.ProductId == id);
+            var item = cart.Items.FirstOrDefault(x => x.ProductId == id);
 
             if (item != null)
             {
@@ -58,7 +54,8 @@ namespace WebStore.Services
 
         public void RemoveAll()
         {
-            _cartStore.Cart = new Cart { Items = new List<CartItem>() };
+            _cartStore.Cart.Items.Clear();
+            // Cart = new Cart { Items = new List<CartItem>() }; // проваливает юнит-тесты
         }
 
         public void AddToCart(int id)

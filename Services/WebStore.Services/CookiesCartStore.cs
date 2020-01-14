@@ -1,17 +1,18 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 using WebStore.DomainNew.ViewModels;
 using WebStore.Interfaces;
 
 namespace WebStore.Services
 {
-    public class CookiesCartStore:ICartStore
+    public class CookiesCartStore : ICartStore
     {
         private string _cartName;
         private IHttpContextAccessor _httpContextAccessor { get; }
+
         public Cart Cart
         {
             get
@@ -91,7 +92,6 @@ namespace WebStore.Services
 
         public CookiesCartStore(IHttpContextAccessor httpContextAccessor)
         {
-            
             _httpContextAccessor = httpContextAccessor;
 
             _cartName = "cart"
@@ -101,5 +101,6 @@ namespace WebStore.Services
                             :
                             "");
         }
+
     }
 }

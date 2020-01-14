@@ -15,118 +15,160 @@ namespace WebStore.Tests
     public class CartServiceTests
     {
         [Fact]
+        // проверим правильншость подсчета суммарного количества товаров в корзине
         public void Cart_Class_ItemsCount_Returns_Correct_Quantity()
         {
-            var cart = new Cart()
+            // Arrange
+            var cart = new Cart
             {
-                Items = new List<CartItem>()
+                Items = new List<CartItem>
                 {
-                    new CartItem()
+                    new CartItem
                     {
                         ProductId = 1,
-                        Quantity = 1
+                        Quantity = 10
                     },
-                    new CartItem()
+                    new CartItem
                     {
                         ProductId = 3,
-                        Quantity = 3
+                        Quantity = 5
                     }
                 }
             };
+
+            // Act
             var result = cart.ItemsCount;
-            Assert.Equal(4, result);
+
+            // Assert
+            // результат должен быть 10 + 5 = 15
+            Assert.Equal(15, result);
         }
+
         [Fact]
+        // проверим правильншость подсчета суммарного количества товаров в модели представления корзины
         public void CartViewModel_Returns_Correct_ItemsCount()
         {
-            var cartViewModel = new CartViewModel()
+            // Arrange
+            var cartViewModel = new CartViewModel
             {
-                Items = new Dictionary<ProductViewModel, int>()
+                Items = new Dictionary<ProductViewModel, int>
                 {
                     {
-                        new ProductViewModel()
+                        new ProductViewModel
                         {
                             Id = 1,
                             Name = "TestItem",
                             Price = 5.0m
                         },
-                        1
+                        10
                     },
                     {
-                        new ProductViewModel()
+                        new ProductViewModel
                         {
                             Id = 2,
                             Name = "TestItem2",
                             Price = 1.0m
                         },
-                        2
+                        20
                     },
                 }
             };
+
+            // Act
             var result = cartViewModel.ItemsCount;
-            Assert.Equal(3, result);
+
+            // Assert
+            // результат должен быть 10 + 20 = 20
+            Assert.Equal(30, result);
         }
+
         [Fact]
         public void CartService_AddToCart_WorksCorrect()
         {
-            var cart = new Cart()
+            // Arrange
+            // подготовим пустую корзину
+            var cart = new Cart
             {
                 Items = new List<CartItem>()
             };
+
             var productData = new Mock<IProductService>();
             var cartStore = new Mock<ICartStore>();
             cartStore.Setup(c => c.Cart).Returns(cart);
-            var cartService = new CartService(productData.Object,
-                cartStore.Object);
-            //Act
+
+            var cartService = new CartService(productData.Object, cartStore.Object);
+
+            // Act
             cartService.AddToCart(5);
-            //Assert
+
+            // Assert
             Assert.Equal(1, cart.ItemsCount);
             Assert.Equal(1, cart.Items.Count);
             Assert.Equal(5, cart.Items[0].ProductId);
         }
+
         [Fact]
         public void CartService_AddToCart_Increment_Quantity()
         {
+            // Arrange
+            // подготовим корзину с товарами
             var cart = new Cart()
             {
-                Items = new List<CartItem>()
+                Items = new List<CartItem>
                 {
-                    new CartItem(){ProductId = 5, Quantity = 2}
+                    new CartItem { ProductId = 5, Quantity = 2 }
                 }
             };
+
             var productData = new Mock<IProductService>();
             var cartStore = new Mock<ICartStore>();
             cartStore.Setup(c => c.Cart).Returns(cart);
-            var cartService = new CartService(productData.Object,
-                cartStore.Object);
+
+            var cartService = new CartService(productData.Object, cartStore.Object);
+
+            // Act
             cartService.AddToCart(5);
+
+            // Assert
             Assert.Equal(1, cart.Items.Count);
             Assert.Equal(3, cart.ItemsCount);
         }
+
         [Fact]
         public void CartService_RemoveFromCart_Removes_Correct_Item()
         {
+            // Arrange
+            // корзина с товарами
             var cart = new Cart()
             {
                 Items = new List<CartItem>()
                 {
-                    new CartItem(){ProductId = 1,Quantity = 3},
-                    new CartItem(){ProductId = 2, Quantity = 1}
+                    new CartItem { ProductId = 1, Quantity = 3},
+                    new CartItem { ProductId = 2, Quantity = 1}
                 }
             };
+
             var productData = new Mock<IProductService>();
             var cartStore = new Mock<ICartStore>();
             cartStore.Setup(c => c.Cart).Returns(cart);
-            var cartService = new CartService(productData.Object,
-                cartStore.Object);
+
+            var cartService = new CartService(productData.Object, cartStore.Object);
+
+            // Act
+            // удаляем товар
             cartService.RemoveFromCart(1);
+
+            // Assert
+            // должен остаться 1 товар в корзине
             Assert.Equal(1, cart.Items.Count);
             Assert.Equal(2, cart.Items[0].ProductId);
         }
+
         [Fact]
         public void CartService_RemoveAll_Clear_Cart()
         {
+            // Arrange
+            // корзина с товарами
             var cart = new Cart()
             {
                 Items = new List<CartItem>()
@@ -135,38 +177,27 @@ namespace WebStore.Tests
                     new CartItem(){ProductId = 2, Quantity = 1}
                 }
             };
+
             var productData = new Mock<IProductService>();
             var cartStore = new Mock<ICartStore>();
             cartStore.Setup(c => c.Cart).Returns(cart);
-            var cartService = new CartService(productData.Object,
-                cartStore.Object);
+
+            var cartService = new CartService(productData.Object, cartStore.Object);
+
+            // Act
+            // удаляем все
             cartService.RemoveAll();
+
+            // Assert
+            // должна быть пустая корзина
             Assert.Equal(0, cart.Items.Count);
         }
-        [Fact]
-        public void CartService_Decrement_Correct()
-        {
-            var cart = new Cart()
-            {
-                Items = new List<CartItem>()
-                {
-                    new CartItem(){ProductId = 1,Quantity = 3},
-                    new CartItem(){ProductId = 2, Quantity = 1}
-                }
-            };
-            var productData = new Mock<IProductService>();
-            var cartStore = new Mock<ICartStore>();
-            cartStore.Setup(c => c.Cart).Returns(cart);
-            var cartService = new CartService(productData.Object,
-                cartStore.Object);
-            cartService.DecrementFromCart(1);
-            Assert.Equal(3, cart.ItemsCount);
-            Assert.Equal(2, cart.Items.Count);
-            Assert.Equal(1, cart.Items[0].ProductId);
-        }
 
+        [Fact]
         public void CartService_Remove_Item_When_Decrement()
         {
+            // Arrange
+            // такая же корзина, как и в прежнем тесте
             var cart = new Cart()
             {
                 Items = new List<CartItem>()
@@ -175,18 +206,27 @@ namespace WebStore.Tests
                     new CartItem(){ProductId = 2, Quantity = 1}
                 }
             };
+
             var productData = new Mock<IProductService>();
             var cartStore = new Mock<ICartStore>();
             cartStore.Setup(c => c.Cart).Returns(cart);
-            var cartService = new CartService(productData.Object,
-                cartStore.Object);
+
+            var cartService = new CartService(productData.Object, cartStore.Object);
+
+            // Act
             cartService.DecrementFromCart(2);
+
+            // Assert
+            // осталось 3 из 4 товаров
             Assert.Equal(3, cart.ItemsCount);
+            // осталось только 1 наименование товара
             Assert.Equal(1, cart.Items.Count);
         }
+
         [Fact]
         public void CartService_TransformCart_WorksCorrect()
         {
+            // Arrange
             var cart = new Cart()
             {
                 Items = new List<CartItem>()
@@ -205,14 +245,18 @@ namespace WebStore.Tests
                     Price = 1.11m,
                 }
             };
+
             var productData = new Mock<IProductService>();
-            productData.Setup(c =>
-                c.GetProducts(It.IsAny<ProductFilter>())).Returns(products);
+            productData.Setup(c => c.GetProducts(It.IsAny<ProductFilter>())).Returns(products);
             var cartStore = new Mock<ICartStore>();
             cartStore.Setup(c => c.Cart).Returns(cart);
-            var cartService = new CartService(productData.Object,
-                cartStore.Object);
+
+            var cartService = new CartService(productData.Object, cartStore.Object);
+
+            // Act
             var result = cartService.TransformCart();
+
+            // Assert
             Assert.Equal(4, result.ItemsCount);
             Assert.Equal(1.11m, result.Items.First().Key.Price);
         }

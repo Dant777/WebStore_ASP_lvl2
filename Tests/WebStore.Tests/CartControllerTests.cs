@@ -15,36 +15,43 @@ namespace WebStore.Tests
 {
     public class CartControllerTests
     {
-        private Mock<ICartService> _mockCartService;
-        private Mock<IOrdersService> _mockOrdersService;
-        private CartController _controller;
+        Mock<ICartService> _mockCartService;
+        Mock<IOrdersService> _mockOrdersService;
+        CartController _controller;
 
+        // ctor
         public CartControllerTests()
         {
-            //объекты заглушки для передачи в конструктор
-            _mockCartService =new Mock<ICartService>();
+            // инициализируем мок-сервисы и контроллер
+            _mockCartService = new Mock<ICartService>();
             _mockOrdersService = new Mock<IOrdersService>();
-
             _controller = new CartController(_mockCartService.Object, _mockOrdersService.Object);
         }
+
         [Fact]
-        public void CheckOut_ModelState_Invalid_Retuens_ViewModel()
+        // проверяем поведение метода _controller.CheckOut при наличии ошибки в модели
+        public void CheckOut_ModelState_Invalid_Returns_ViewModel()
         {
-            //Arrage
-            //добавляем ошибку в ModelState
-            _controller.ModelState.AddModelError("error","InvalidModel");
-            //Act
+            // Arrange
+            // добавим ошибку в ModelState
+            _controller.ModelState.AddModelError("error", "InvalidModel");
+
+            // Act
             var result = _controller.CheckOut(new OrderViewModel
             {
                 Name = "test"
             });
-            //Assert
+
+            // Assert
             var viewResult = Assert.IsType<ViewResult>(result);
             var model = Assert.IsAssignableFrom<OrderDetailsViewModel>(viewResult.ViewData.Model);
-            //модел все равно должна была созздаться
-            Assert.Equal("test",model.OrderViewModel.Name);
+            // модель все равно должна была создаться
+            Assert.Equal("test", model.OrderViewModel.Name);
         }
+
         [Fact]
+        //проверяем, что при создании заказа нас действительно перенаправляют на страницу с подтверждением
+        //также проверим id модели
         public void CheckOut_Calls_Service_And_Return_Redirect()
         {
             #region Arrange
@@ -52,47 +59,52 @@ namespace WebStore.Tests
             {
                 new Claim(ClaimTypes.NameIdentifier, "1"),
             }));
+
             // setting up cartService
-            var mockCartService = new Mock<ICartService>();
-            mockCartService.Setup(c => c.TransformCart()).Returns(new
-                CartViewModel()
+            _mockCartService
+                .Setup(c => c.TransformCart())
+                .Returns(new CartViewModel
                 {
                     Items = new Dictionary<ProductViewModel, int>()
                     {
                         { new ProductViewModel(), 1 }
                     }
                 });
-            // setting up ordersService
-            var mockOrdersService = new Mock<IOrdersService>();
-            mockOrdersService.Setup(c =>c.CreateOrder(It.IsAny<CreateOrderDto>(), It.IsAny<string>()))
-                .Returns(new OrderDto() { Id = 1 });
 
-            var controller = new CartController(mockCartService.Object,
-                mockOrdersService.Object)
+            // setting up ordersService
+            _mockOrdersService
+                .Setup(c => c.CreateOrder(
+                    It.IsAny<CreateOrderDto>(),
+                    It.IsAny<string>()))
+                .Returns(new OrderDto { Id = 1 });
+
+            _controller.ControllerContext = new ControllerContext
             {
-                ControllerContext = new ControllerContext()
+                HttpContext = new DefaultHttpContext
                 {
-                    HttpContext = new DefaultHttpContext()
-                    {
-                        User = user
-                    }
+                    User = user
                 }
             };
             #endregion
+
             // Act
-            var result = controller.CheckOut(new OrderViewModel()
+            var result = _controller.CheckOut(new OrderViewModel
             {
-                Name =
-                    "test",
+                Name = "test",
                 Address = "",
                 Phone = ""
             });
+
             // Assert
             var redirectResult = Assert.IsType<RedirectToActionResult>(result);
+            // имя контроллера должно быть пустым при редиректе
             Assert.Null(redirectResult.ControllerName);
+            // имя action-метода должно быть "OrderConfirmed" (куда перенаправили)
             Assert.Equal("OrderConfirmed", redirectResult.ActionName);
+            // id заказа = 1 (какой и передали в модели)
             Assert.Equal(1, redirectResult.RouteValues["id"]);
         }
 
     }
 }
+

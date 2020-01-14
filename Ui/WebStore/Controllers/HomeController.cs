@@ -17,22 +17,22 @@ namespace WebStore.Controllers
 
         public HomeController(IValueService valueService, ILogger<HomeController> logger)
         {
-            
             _valueService = valueService;
             _logger = logger;
         }
 
-        [SimpleActionFilter] 
+        [SimpleActionFilter]
         public async Task<IActionResult> Index()
         {
             //throw new Exception("No pasaran!");
-            _logger?.LogInformation("Index action requested");
-            _logger?.LogTrace("Trace! winter is coming");
-            _logger?.LogInformation("Info! winter is coming");
-            _logger?.LogWarning("Warning! winter is coming");
-            _logger?.LogDebug("Debug! winter is coming");
-            _logger?.LogError("Error! winter is coming");
-            _logger?.LogCritical("Critical! winter is coming");
+
+            _logger?.LogInformation("index action requested");
+            _logger?.LogTrace("trace! winter is coming!");
+            _logger?.LogInformation("info! winter is coming!");
+            _logger?.LogWarning("warning! winter is coming!");
+            _logger?.LogDebug("debug! winter is coming!");
+            _logger?.LogError("error! winter is coming!");
+            _logger?.LogCritical("critical! winter is coming!");
 
             var values = await _valueService.GetAsync();
             return View(values);
@@ -60,17 +60,20 @@ namespace WebStore.Controllers
         {
             return View();
         }
+
+        //home/errorstatus/403
         public IActionResult ErrorStatus(string id)
         {
             if (id == "404")
                 return RedirectToAction("NotFound");
+
             return Content($"Статуcный код ошибки: {id}");
         }
+
         public IActionResult Error()
         {
             return View();
         }
-
 
         public IActionResult NotFound()
         {

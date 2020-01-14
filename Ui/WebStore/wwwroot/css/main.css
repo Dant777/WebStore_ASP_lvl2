@@ -2520,8 +2520,8 @@ h2.title {
   color: #FE980F;
 }
 
-.panel-heading h4.active,
-.panel-body ul li.active {
+
+.panel-body ul li.active, /*для дочерней категории*/
+.panel-heading h4.active /*для корневой категории*/ {
     text-decoration: underline;
 }
-

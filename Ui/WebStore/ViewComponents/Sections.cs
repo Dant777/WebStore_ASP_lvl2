@@ -28,23 +28,20 @@ namespace WebStore.ViewComponents
                 Sections = sections,
                 CurrentSectionId = sectionIdInt,
                 CurrentParentSectionId = parentSectionId
-
             });
+
         }
 
-        /// <summary>
-        /// Получает секции из базы и строит дерево
-        /// </summary>
-        /// <returns></returns>
         private List<SectionViewModel> GetSections(int? sectionId, out int? parentSectionId)
         {
             parentSectionId = null;
 
-            var allSections = _productService.GetSections();
-            var parentCategories = allSections.Where(p =>!p.ParentId.HasValue).ToArray();
+            var categories = _productService.GetSections();
 
+            var parentCategories = categories.Where(x => !x.ParentId.HasValue).ToArray();
             var parentSections = new List<SectionViewModel>();
 
+            // получим и заполним родительские категории
             foreach (var parentCategory in parentCategories)
             {
                 parentSections.Add(new SectionViewModel()
@@ -56,14 +53,16 @@ namespace WebStore.ViewComponents
                 });
             }
 
+            // получим и заполним дочерние категории
             foreach (var sectionViewModel in parentSections)
             {
-                var childCategories = allSections.Where(c =>
-                    c.ParentId.Equals(sectionViewModel.Id));
+                var childCategories = categories.Where(c => c.ParentId == sectionViewModel.Id);
                 foreach (var childCategory in childCategories)
                 {
+                    // определение родительской категории
                     if (childCategory.Id == sectionId)
                         parentSectionId = sectionViewModel.Id;
+
                     sectionViewModel.ChildSections.Add(new SectionViewModel()
                     {
                         Id = childCategory.Id,
@@ -72,12 +71,15 @@ namespace WebStore.ViewComponents
                         ParentSection = sectionViewModel
                     });
                 }
-                sectionViewModel.ChildSections =
-                    sectionViewModel.ChildSections.OrderBy(c => c.Order).ToList();
+
+                sectionViewModel.ChildSections = sectionViewModel.ChildSections
+                    .OrderBy(c => c.Order)
+                    .ToList();
             }
+
             parentSections = parentSections.OrderBy(c => c.Order).ToList();
+
             return parentSections;
         }
-
     }
 }

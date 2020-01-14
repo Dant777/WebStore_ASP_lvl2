@@ -1,17 +1,15 @@
-﻿using Microsoft.AspNetCore;
+﻿using System;
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
 using WebStore.DAL;
 
 namespace WebStore.ServicesHosting
 {
+
     public class Program
     {
-      
-
-
         public static void Main(string[] args)
         {
             var host = BuildWebHost(args);
@@ -25,7 +23,6 @@ namespace WebStore.ServicesHosting
                 {
                     DbInitializer.Initialize(context);
                     DbInitializer.InitializeUsers(services);
-
                 }
                 catch (Exception ex)
                 {
@@ -37,11 +34,9 @@ namespace WebStore.ServicesHosting
             host.Run();
         }
 
-
         private static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .Build();
-
     }
 }

@@ -9,5 +9,6 @@ namespace WebStore.DomainNew.Dto.User
     {
         public Entities.User User { get; set; }
         public UserLoginInfo UserLoginInfo { get; set; }
+
     }
 }
