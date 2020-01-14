@@ -2,8 +2,9 @@
     @*@await Component.InvokeAsync("Sections", new { SectionId = Context.Request.Query["SectionId"].ToString() })*@
     <vc:Sections section-id="@Context.Request.Query["SectionId"].ToString()" />
 
-    @*@await Component.InvokeAsync("Brands")*@
-    <vc:Brands />
+    @await Component.InvokeAsync("Brands", new { brandId = Context.Request.Query["brandId"].ToString() })
+
+    @*<vc:Brands />*@
 
     <div class="price-range">
         <!--price-range-->

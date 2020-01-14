@@ -17,10 +17,16 @@ namespace WebStore.ViewComponents
             _productService = productService;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(string brandId)
         {
+            int.TryParse(brandId, out var brandIdResult);
             var brands = GetBrands();
-            return View(brands);
+            return View(new BrandCompleteViewModel()
+            {
+                Brands = brands,
+                CurrentBrandId = brandIdResult
+            });
+
         }
 
         private IEnumerable<BrandViewModel> GetBrands()
@@ -36,5 +42,9 @@ namespace WebStore.ViewComponents
             }).OrderBy(x => x.Order)
                 .ToList();
         }
+
+    
+
     }
+
 }
