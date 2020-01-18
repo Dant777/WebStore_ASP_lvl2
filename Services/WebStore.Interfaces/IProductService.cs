@@ -9,7 +9,7 @@ namespace WebStore.Interfaces
     {
         IEnumerable<Section> GetSections();
         IEnumerable<Brand> GetBrands();
-        IEnumerable<ProductDto> GetProducts(ProductFilter filter);
+        PagedProductDto GetProducts(ProductFilter filter);
 
         /// <summary>
         /// Получить товар по Id

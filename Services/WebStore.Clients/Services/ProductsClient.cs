@@ -30,11 +30,11 @@ namespace WebStore.Clients.Services
             return Get<List<Brand>>(url);
         }
 
-        public IEnumerable<ProductDto> GetProducts(ProductFilter filter)
+        public PagedProductDto GetProducts(ProductFilter filter)
         {
             string url = $"{ServiceAddress}";
             var response = Post(url, filter);
-            return response.Content.ReadAsAsync<IEnumerable<ProductDto>>().Result;
+            return response.Content.ReadAsAsync<PagedProductDto>().Result;
         }
 
         public ProductDto GetProductById(int id)

@@ -29,7 +29,7 @@ namespace WebStore.Services.Sql
             return _context.Brands.ToList();
         }
 
-        public IEnumerable<ProductDto> GetProducts(ProductFilter filter)
+        public PagedProductDto GetProducts(ProductFilter filter)
         {
             var products = _context.Products
                 .Include(p => p.Brand)
@@ -41,9 +41,24 @@ namespace WebStore.Services.Sql
             if (filter.BrandId.HasValue)
                 products = products.Where(x => x.BrandId == filter.BrandId.Value);
 
-            return products
-                .Select(p => p.ToDto())
-                .ToList();
+            var model = new PagedProductDto { TotalCount = products.Count() };
+
+            if (filter.PageSize != null) // если указан размер страницы
+            {
+                model.Products = products
+                    .Skip((filter.Page - 1) * (int)filter.PageSize)
+                    .Take((int)filter.PageSize)
+                    .Select(p => p.ToDto())
+                    .ToList();
+            }
+            else // иначе работаем по старой логике
+            {
+                model.Products = products
+                    .Select(p => p.ToDto())
+                    .ToList();
+            }
+
+            return model;
         }
 
         public ProductDto GetProductById(int id)
