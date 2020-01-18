@@ -51,12 +51,13 @@ namespace WebStore.Controllers
             return RedirectToAction("Details");
         }
 
-        public IActionResult AddToCart(int id, string returnUrl)
+        public IActionResult AddToCart(int id)
         {
             _cartService.AddToCart(id);
-            return Redirect(returnUrl);
+            return Json(new {id, message = "Товар добавлен в корзину"});
         }
 
+        public IActionResult GetCartView() => ViewComponent("CartSummary");
         /// <summary>
         /// создание заказа
         /// </summary>

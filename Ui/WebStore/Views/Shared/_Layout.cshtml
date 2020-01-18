@@ -45,11 +45,19 @@
         <script src="~/js/price-range.js"></script>
         <script src="~/js/jquery.prettyPhoto.js"></script>
         <script src="~/js/main.js"></script>
+        <script src="~/js/cartLogic.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="~/js/site.min.js"></script>
     </environment>
-
+<script type="text/javascript">
+    $(function() {
+        Cart.init({
+            addToCartLink: '@Url.Action("AddToCart","Cart")',
+            getCartViewLink:'@Url.Action("GetCartView","Cart")'
+        })
+    })
+</script>
     <!--Секция для отображения кастомных скриптов, если понадобятся-->
     @RenderSection("scripts", false)
 </body>
