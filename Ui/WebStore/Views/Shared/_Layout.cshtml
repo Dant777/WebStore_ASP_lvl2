@@ -50,14 +50,16 @@
     <environment exclude="Development">
         <script src="~/js/site.min.js"></script>
     </environment>
-<script type="text/javascript">
-    $(function() {
-        Cart.init({
-            addToCartLink: '@Url.Action("AddToCart","Cart")',
-            getCartViewLink:'@Url.Action("GetCartView","Cart")'
+
+    <script type="text/javascript">
+        $(function() {
+            Cart.init({
+                addToCartLink: '@Url.Action("AddToCart","Cart")',
+                getCartViewLink: '@Url.Action("GetCartView","Cart")',
+            });
         })
-    })
-</script>
+    </script>
+
     <!--Секция для отображения кастомных скриптов, если понадобятся-->
     @RenderSection("scripts", false)
 </body>

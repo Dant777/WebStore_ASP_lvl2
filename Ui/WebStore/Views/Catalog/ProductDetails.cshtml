@@ -59,10 +59,9 @@
                         <span>
                             <span>@Model.Price.ToString("C")</span>
                             @*<label>Quantity:</label>
-                            <input type="text" value="3" />*@
-                            <a 
-                                asp-route-id="@Model.Id"
-                               asp-route-returnUrl="@Context.Request.Path"
+                                <input type="text" value="3" />*@
+                            <a
+                               data-id="@Model.Id"
                                class="btn btn-fefault cart callAddToCart">
                                 <i class="fa fa-shopping-cart"></i>
                                 Add to cart

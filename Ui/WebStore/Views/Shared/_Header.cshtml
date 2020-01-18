@@ -34,19 +34,21 @@
                 <div class="col-sm-9">
                     <div class="logo pull-left">
                         <a asp-controller="Home" asp-action="Index">
-                            <img src="~/images/home/logo.png" alt=""/>
+                            <img src="~/images/home/logo.png" alt="" />
                         </a>
                     </div>
                     <div class="pull-right" id="cartContainer">
                         @await Component.InvokeAsync("CartSummary")
                     </div>
                 </div>
+
                 <div class="col-sm-3">
                     @await Component.InvokeAsync("LoginLogout")
                 </div>
             </div>
         </div>
-    </div><!--/header-middle-->
+    </div>
+    <!--/header-middle-->
 
     <div class="header-bottom">
         <!--header-bottom-->
@@ -65,7 +67,7 @@
                         <ul class="nav navbar-nav collapse navbar-collapse">
                             <li><a is-active-route asp-controller="Home" asp-action="Index">Home</a></li>
                             <li class="dropdown">
-                                <a is-active-route asp-controller="Catalog" asp-action="Shop">Shop<i class="fa fa-angle-down"></i></a>
+                                <a is-active-route ignore-action asp-controller="Catalog" asp-action="Shop">Shop<i class="fa fa-angle-down"></i></a>
                                 <ul role="menu" class="sub-menu">
                                     <li><a asp-controller="Catalog" asp-action="Shop">Products</a></li>
                                     <li><a asp-controller="Catalog" asp-action="ProductDetails">Product Details</a></li>
@@ -83,7 +85,7 @@
                             </li>
                             <li><a is-active-route asp-controller="Home" asp-action="NotFound">404</a></li>
                             <li><a is-active-route asp-controller="Home" asp-action="ContactUs">Contact</a></li>
-                            <li><a is-active-route asp-controller="Employee" asp-action="Index">Employees</a></li>
+                            <li><a is-active-route ignore-action asp-controller="Employee" asp-action="Index">Employees</a></li>
                         </ul>
                     </div>
                 </div>

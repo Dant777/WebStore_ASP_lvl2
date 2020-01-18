@@ -8,6 +8,6 @@ namespace WebStore.DomainNew.ViewModels
     {
         public IEnumerable<BrandViewModel> Brands { get; set; }
         public int? CurrentBrandId { get; set; }
-
     }
+
 }

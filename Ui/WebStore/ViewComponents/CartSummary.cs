@@ -7,16 +7,13 @@ using WebStore.Interfaces;
 
 namespace WebStore.ViewComponents
 {
-    public class CartSummary:ViewComponent
+    public class CartSummary : ViewComponent
     {
         private readonly ICartService _cartService;
 
-        public CartSummary(ICartService cartService)
-        {
-            _cartService = cartService;
-        }
-
+        public CartSummary(ICartService cartService) => _cartService = cartService;
 
         public IViewComponentResult Invoke() => View(_cartService.TransformCart());
+
     }
 }

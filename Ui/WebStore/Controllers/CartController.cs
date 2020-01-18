@@ -54,10 +54,11 @@ namespace WebStore.Controllers
         public IActionResult AddToCart(int id)
         {
             _cartService.AddToCart(id);
-            return Json(new {id, message = "Товар добавлен в корзину"});
+            return Json(new { id, message = "Товар добавлен в корзину" });
         }
 
         public IActionResult GetCartView() => ViewComponent("CartSummary");
+
         /// <summary>
         /// создание заказа
         /// </summary>

@@ -25,7 +25,12 @@ namespace WebStore.TagHelpers
         {
             base.Process(context, output);
 
-            if (ShouldBeActive())
+            // если атрибут найден, поднимем флаг ignoreAction 
+            bool ignoreAction = context
+                .AllAttributes
+                .TryGetAttribute("ignore-action", out _);
+
+            if (ShouldBeActive(ignoreAction))
                 MakeActive(output);
 
             output.Attributes.RemoveAll("is-active-route");
@@ -47,7 +52,7 @@ namespace WebStore.TagHelpers
             }
         }
 
-        private bool ShouldBeActive()
+        private bool ShouldBeActive(bool ignoreAction)
         {
             var currentController = ViewContext.RouteData.Values["Controller"].ToString();
             var currentAction = ViewContext.RouteData.Values["Action"].ToString();
@@ -55,7 +60,7 @@ namespace WebStore.TagHelpers
             if (!string.IsNullOrWhiteSpace(Controller) && currentController != Controller)
                 return false;
 
-            if (!string.IsNullOrWhiteSpace(Action) && Action != currentAction)
+            if (!ignoreAction && !string.IsNullOrWhiteSpace(Action) && Action != currentAction)
                 return false;
 
             return true;
