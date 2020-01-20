@@ -43,8 +43,8 @@
                                    class="cart_quantity_up">+</a>
                                 <input class="cart_quantity_input" type="text" name="quantity"
                                        value="@item.Value" autocomplete="off" size="2">
-                                <a asp-controller="Cart" asp-action="DecrementFromCart"
-                                   asp-route-id="@item.Key.Id"
+                                <a 
+                                   data-id="@item.Key.Id"
                                    class="cart_quantity_down">-</a>
                             </div>
                         </td>

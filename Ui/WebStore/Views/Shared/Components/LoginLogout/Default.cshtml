@@ -1,11 +1,19 @@
 ﻿@if (User.Identity.IsAuthenticated)
 {
-    <span>Здравствуйте, 
+    <span>
+        Здравствуйте,
         <a asp-action="Index" asp-controller="Profile">@User.Identity.Name</a>
-        </span>
+    </span>
     <form method="post" asp-controller="Account" asp-action="Logout" asp-antiforgery="true">
         <input type="submit" value="Выход" class="btn btn-default" />
     </form>
+
+    if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Index" asp-controller="Home" asp-area="Admin" class="btn btn-sm btn-link">
+            Админка
+        </a>
+    }
 }
 else
 {

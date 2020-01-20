@@ -227,22 +227,25 @@ namespace WebStore.Tests
         public void CartService_TransformCart_WorksCorrect()
         {
             // Arrange
-            var cart = new Cart()
+            var cart = new Cart
             {
-                Items = new List<CartItem>()
+                Items = new List<CartItem>
                 {
-                    new CartItem(){ProductId = 1, Quantity = 4}
+                    new CartItem{ProductId = 1, Quantity = 4}
                 }
             };
-            var products = new List<ProductDto>()
+            var products = new PagedProductDto
             {
-                new ProductDto()
+                Products = new List<ProductDto>
                 {
-                    Id = 1,
-                    ImageUrl = "",
-                    Name = "Test",
-                    Order = 0,
-                    Price = 1.11m,
+                    new ProductDto
+                    {
+                        Id = 1,
+                        ImageUrl = "",
+                        Name = "Test",
+                        Order = 0,
+                        Price = 1.11m,
+                    }
                 }
             };
 
@@ -259,6 +262,33 @@ namespace WebStore.Tests
             // Assert
             Assert.Equal(4, result.ItemsCount);
             Assert.Equal(1.11m, result.Items.First().Key.Price);
+        }
+
+        [Fact]
+        public void CartService_Decrement_Correct()
+        {
+            var cart = new Cart
+            {
+                Items = new List<CartItem>
+                {
+                    new CartItem {ProductId = 1,Quantity = 3},
+                    new CartItem {ProductId = 2, Quantity = 1}
+                }
+            };
+
+            var productData = new Mock<IProductService>();
+            var cartStore = new Mock<ICartStore>();
+            cartStore.Setup(c => c.Cart).Returns(cart);
+
+            var cartService = new CartService(
+                productData.Object,
+                cartStore.Object);
+
+            cartService.DecrementFromCart(1);
+
+            Assert.Equal(3, cart.ItemsCount);
+            Assert.Equal(2, cart.Items.Count);
+            Assert.Equal(1, cart.Items[0].ProductId);
         }
 
     }

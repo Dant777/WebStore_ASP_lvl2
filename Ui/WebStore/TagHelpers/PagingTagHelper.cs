@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -52,11 +53,16 @@ namespace WebStore.TagHelpers
             var a = new TagBuilder("a");
 
             if (pageNumber == PageModel.PageNumber)
+            {
+                a.MergeAttribute("data-page", PageModel.PageNumber.ToString());
                 li.AddCssClass("active");
+            }
             else
             {
                 PageUrlValues["page"] = pageNumber;
-                a.Attributes["href"] = urlHelper.Action(PageAction, PageUrlValues);
+                a.Attributes["href"] = "#";
+                foreach (var (key, value) in PageUrlValues.Where(p => p.Value != null))
+                    a.MergeAttribute($"data-{key}", value.ToString());
             }
 
             a.InnerHtml.AppendHtml(pageNumber.ToString());

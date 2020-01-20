@@ -22,5 +22,9 @@ namespace WebStore.DomainNew.Entities
 
         [ForeignKey("BrandId")]
         public virtual Brand Brand { get; set; }
+
+        /// <summary>Удален товар или нет</summary>
+        public bool IsDeleted { get; set; }
+
     }
 }

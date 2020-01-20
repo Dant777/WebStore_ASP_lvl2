@@ -27,21 +27,44 @@ namespace WebStore.Controllers
         {
             var pageSize = int.Parse(_configuration["PageSize"]);
 
-            var products = _productService.GetProducts(
-                new ProductFilter
-                {
-                    SectionId = sectionId,
-                    BrandId = brandId,
-                    Page = page,
-                    PageSize = pageSize
-                });
+            var products = GetProducts(sectionId, brandId, page, out var totalCount);
 
             // сконвертируем в CatalogViewModel
             var model = new CatalogViewModel()
             {
                 BrandId = brandId,
                 SectionId = sectionId,
-                Products = products.Products.Select(p => new ProductViewModel()
+                Products = products,
+                PageViewModel = new PageViewModel
+                {
+                    PageSize = pageSize,
+                    PageNumber = page,
+                    TotalItems = totalCount
+                }
+            };
+
+            return View(model);
+        }
+
+        public IActionResult GetFilteredItems(int? sectionId, int? brandId, int page = 1)
+        {
+            var productsModel = GetProducts(sectionId, brandId, page, out var totalCount);
+
+            return PartialView("Partial/_FeaturedItems", productsModel);
+        }
+
+        private IEnumerable<ProductViewModel> GetProducts(int? sectionId, int? brandId, int page, out int totalCount)
+        {
+            var products = _productService.GetProducts(new ProductFilter
+            {
+                SectionId = sectionId,
+                BrandId = brandId,
+                Page = page,
+                PageSize = int.Parse(_configuration["PageSize"])
+            });
+            totalCount = products.TotalCount;
+
+            return products.Products.Select(p => new ProductViewModel
                 {
                     Id = p.Id,
                     ImageUrl = p.ImageUrl,
@@ -49,18 +72,11 @@ namespace WebStore.Controllers
                     Order = p.Order,
                     Price = p.Price,
                     BrandName = p.Brand?.Name ?? String.Empty
-                }).OrderBy(p => p.Order).ToList(),
-                PageViewModel = new PageViewModel
-                {
-                    PageSize = pageSize,
-                    PageNumber = page,
-                    TotalItems = products.TotalCount
-                }
-
-            };
-
-            return View(model);
+                })
+                .OrderBy(p => p.Order)
+                .ToList();
         }
+
 
         public IActionResult ProductDetails(int id)
         {

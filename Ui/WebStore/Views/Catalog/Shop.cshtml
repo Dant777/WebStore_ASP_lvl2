@@ -21,3 +21,15 @@
         </div>
     </div>
 </section>
+
+@section scripts{
+    <script src="~/lib/jquery-loading-overlay/loadingoverlay.min.js"></script>
+    <script src="~/js/productItems.js" asp-append-version="true"></script>
+    <script>
+        $(function() {
+            ProductItems.init({
+                getUrl: '@Url.Action("GetFilteredItems")'
+            });
+        });
+    </script>
+}
